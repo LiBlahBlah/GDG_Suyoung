@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.0'
+
+    defaultConfig {
+        applicationId "com.flybbird.hometownweather"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField "String",  "AUTH_KEY_WHEATHER", '"18efefa96be311d832f357d0b54393b7"'
+        //buildConfigField "String",  "SERVER_URL", '"http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2"'
+        buildConfigField "String",  "SERVER_URL", '"http://api.openweathermap.org/data/2.5/weather"'
+
+
+    }
+
+
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    // GPS
+    compile 'com.google.android.gms:play-services:8.4.0'
+
+    // Image Download
+    compile 'com.squareup.picasso:picasso:2.5.2'
+}
