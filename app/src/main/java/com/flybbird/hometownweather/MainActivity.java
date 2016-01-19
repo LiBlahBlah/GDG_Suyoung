@@ -194,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mWeatherTempTextView.setText(temp);
 
             Picasso.with(MainActivity.this).load(data.getWeatherIconUrl()).into(mWeatherIconImageView);
-            Picasso.with(MainActivity.this).shutdown();;
         }
     }
 }
