@@ -81,10 +81,13 @@ public class RequestWeatherTask  extends AsyncTask<Location, Void, JSONObject>
     @Override
     protected void onPostExecute(JSONObject json) {
         try {
+            String cityID = json.getString("id");
             String cityName = json.getString("name");
             JSONArray weatherArray = json.getJSONArray("weather");
             JSONObject tempObject = json.getJSONObject("main");
+
             WeatherData weatherData = new WeatherData();
+            weatherData.setCityID(cityID);
             weatherData.setCityName(cityName);
 
             if ( weatherArray.length() > 0) {
@@ -101,7 +104,7 @@ public class RequestWeatherTask  extends AsyncTask<Location, Void, JSONObject>
             if (tempObject != null ){
                 float temp = (float)tempObject.getDouble("temp");
 
-                weatherData.setWeatherTemp(temp);
+                weatherData.setWeatherTempature(temp);
             }
 
             if ( listener != null ){

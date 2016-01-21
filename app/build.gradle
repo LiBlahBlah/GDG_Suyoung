@@ -40,4 +40,7 @@ dependencies {
 
     // Image Download
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // Use Realm Java
+    compile 'io.realm:realm-android:0.87.1'
 }
