@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.0'
+    buildToolsVersion '23.0.1'
 
     defaultConfig {
         applicationId "com.flybbird.hometownweather"
@@ -16,6 +16,8 @@ android {
         buildConfigField "String",  "SERVER_URL", '"http://api.openweathermap.org/data/2.5/weather"'
 
 
+        // for the Test : Runner
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
 
@@ -34,7 +36,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
     // GPS
     compile 'com.google.android.gms:play-services:8.4.0'
 
@@ -43,4 +45,13 @@ dependencies {
 
     // Use Realm Java
     compile 'io.realm:realm-android:0.87.1'
+
+    // App dependencies
+    compile 'com.android.support:support-annotations:23.0.1'
+
+    // Testing-only dependencies
+    androidTestCompile 'com.android.support:support-annotations:23.0.1'
+    androidTestCompile 'com.android.support.test:runner:0.4.1'
+    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 }
