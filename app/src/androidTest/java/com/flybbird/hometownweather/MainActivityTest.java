@@ -9,17 +9,10 @@ import org.junit.runner.RunWith;
 import org.junit.After;
 import org.junit.Before;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 import com.flybbird.hometownweather.DB.WeatherSimpleData;
-import com.flybbird.hometownweather.Data.WeatherData;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 
 
 /**
@@ -90,11 +83,11 @@ public class MainActivityTest {
                 mTestReam.where(WeatherSimpleData.class).equalTo("cityName","GURO").findFirst();
 
         assertEquals(deleteItem,null);
-
-
-
         // ]]
+    }
 
+    @Test
+    public void validNetwork(){
 
     }
 }
