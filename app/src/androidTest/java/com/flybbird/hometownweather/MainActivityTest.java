@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.junit.After;
 import org.junit.Before;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.util.Log;
+
 import static org.junit.Assert.assertEquals;
 import com.flybbird.hometownweather.DB.WeatherSimpleData;
 import io.realm.Realm;
@@ -47,6 +49,8 @@ public class MainActivityTest {
     public void valideDatabase() {
         long currentTime = System.currentTimeMillis();
 
+//        mActivityTestRule.getActivity().getTodayStartMillis();
+
         // DB Insert [[
         mTestReam.beginTransaction();
 
@@ -66,12 +70,6 @@ public class MainActivityTest {
 
         WeatherSimpleData  findFirstQuery =
                 mTestReam.where(WeatherSimpleData.class).equalTo("cityName", "GURO").findFirst();
-//        RealmResults<WeatherSimpleData> results =
-//                mTestReam.where(WeatherSimpleData.class).findAll();
-//
-//        for (WeatherSimpleData data : results){
-//            Log.d("DEBUG", "DATA= " + data.getCityName());
-//        }
 
         assertEquals(simpleData, findFirstQuery);
 
