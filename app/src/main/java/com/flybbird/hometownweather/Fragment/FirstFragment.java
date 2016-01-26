@@ -111,6 +111,8 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity())
                 .name("weather.realm")
                 .build();
+
+
         mRealm =  Realm.getInstance(realmConfiguration);
 
         connectGoogleAPiClient();

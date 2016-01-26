@@ -10,9 +10,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+//        multiDexEnabled true
 
         buildConfigField "String",  "AUTH_KEY_WHEATHER", '"18efefa96be311d832f357d0b54393b7"'
-        //buildConfigField "String",  "SERVER_URL", '"http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2"'
         buildConfigField "String",  "SERVER_URL", '"http://api.openweathermap.org/data/2.5/weather"'
 
 
@@ -30,11 +30,21 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
 
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
+//    compile 'com.android.support:multidex:1.0.0'
+
+
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
 
@@ -42,7 +52,12 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
 
     // GPS
-    compile 'com.google.android.gms:play-services:8.4.0'
+//    compile 'com.google.android.gms:play-services:8.4.0'
+//    compile 'com.google.android.gms:play-services-identity:8.3.0'
+//    compile 'com.google.android.gms:play-services-plus:8.3.0'
+//    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    // https://developers.google.com/android/guides/setup
+    compile 'com.google.android.gms:play-services-location:8.4.0'
 
     // Image Download
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -50,11 +65,19 @@ dependencies {
     // Use Realm Java
     compile 'io.realm:realm-android:0.87.1'
 
+    // Use Json Parser
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+
+    // A Search View with Result list powered by Realm
+    compile 'com.github.thorbenprimke:realm-searchview:0.9.4'
+    // For com.fasterxml.jackson Parser < Realm
+    compile 'io.reactivex:rxjava:1.1.0'
+
     // App dependencies
-    compile 'com.android.support:support-annotations:23.0.1'
+    compile 'com.android.support:support-annotations:23.1.1'
 
     // Testing-only dependencies
-    androidTestCompile 'com.android.support:support-annotations:23.0.1'
+    androidTestCompile 'com.android.support:support-annotations:23.1.1'
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.android.support.test:rules:0.4.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
