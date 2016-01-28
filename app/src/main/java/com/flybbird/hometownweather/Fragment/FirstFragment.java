@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -63,13 +64,8 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
     private ListView mListView;
     private ListViewAdapter mListAdapter;
     private Realm mRealm;
+    private FloatingActionButton mFloatingActionButton;
 
-
-//    public static Fragment newInstance(Context context) {
-//        FirstFragment f = new FirstFragment();
-//
-//        return f;
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +80,20 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
         mWeatherDescTextView = (TextView) firstView.findViewById(R.id.WEATHER_DESC);
         mWeatherTempTextView = (TextView)firstView.findViewById(R.id.WEATHER_TEMP);
         mListView = (ListView) firstView.findViewById(R.id.listView);
+
+
+
+        mFloatingActionButton = (FloatingActionButton) firstView.findViewById(R.id.FLOATING_ACTION_BUTTON);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              // LOCATION를 가지고 화면 업데이트
+                mProgressBar.setVisibility(View.VISIBLE);
+                mGpsLocationInfo = getLocation();
+
+                requestWhether();
+            }
+        });
 
 
         return firstView;
@@ -160,7 +170,6 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Location services connected.");
 
-
         startLocationUpdate();
     }
 
@@ -172,9 +181,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed");
-
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -322,18 +329,3 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
 
 }
 
-
-
-/*
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-                                                                GoogleApiClient.OnConnectionFailedListener,
-                                                                LocationListener,
-                                                                RequestWeatherTaskCompleted
-
-{
-
-
-
-
-}
-*/
