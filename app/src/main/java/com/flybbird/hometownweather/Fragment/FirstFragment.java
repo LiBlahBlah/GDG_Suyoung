@@ -215,13 +215,13 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
             // DB UPDATE
             updateDB(data);
 
-            // 현재 측정되는 지역의 평균치를 구해보자
-            double avgTemp = calculateAvgTempatureByCityID(data.getCityID());
-
-            ArrayList<StatiscData> statiscDataArrayList = new ArrayList<>();
-            statiscDataArrayList.add( new StatiscData( data.getCityName(),avgTemp) );
-            mListAdapter.setStatiscDataArrayList(statiscDataArrayList);
-            mListAdapter.notifyDataSetChanged();
+//            // 현재 측정되는 지역의 평균치를 구해보자
+//            double avgTemp = calculateAvgTempatureByCityID(data.getCityID());
+//
+//            ArrayList<StatiscData> statiscDataArrayList = new ArrayList<>();
+//            statiscDataArrayList.add( new StatiscData( data.getCityName(),avgTemp) );
+//            mListAdapter.setStatiscDataArrayList(statiscDataArrayList);
+//            mListAdapter.notifyDataSetChanged();
 
         }
     }
