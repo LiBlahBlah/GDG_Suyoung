@@ -2,7 +2,6 @@ package com.flybbird.hometownweather.task;
 
 import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.flybbird.hometownweather.BuildConfig;
 import com.flybbird.hometownweather.Data.WeatherData;
@@ -118,7 +117,6 @@ public class RequestWeatherTask  extends AsyncTask<Location, Void, JSONObject>
 
     }
 
-
     private  String getStringFromInputStream(InputStream is) {
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
@@ -144,14 +142,12 @@ public class RequestWeatherTask  extends AsyncTask<Location, Void, JSONObject>
         }
 
         return sb.toString();
-
     }
 
     // 쿼리만들기
     private String makeQuery(Location userLocation){
         Location location = userLocation;
         String query = OPEN_API_URL + "?APPID="+OPEN_API_REG_KEY + "&lat=" + location.getLatitude() + "&lon="+location.getLongitude();
-
         return query;
     }
 }

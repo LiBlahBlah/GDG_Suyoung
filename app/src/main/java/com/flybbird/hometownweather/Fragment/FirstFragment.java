@@ -20,11 +20,10 @@ import android.widget.TextView;
 
 import com.flybbird.hometownweather.Adapter.ListViewAdapter;
 import com.flybbird.hometownweather.DB.WeatherSimpleData;
-import com.flybbird.hometownweather.Data.StatiscData;
 import com.flybbird.hometownweather.Data.WeatherData;
 import com.flybbird.hometownweather.R;
-import com.flybbird.hometownweather.Task.RequestWeatherTask;
-import com.flybbird.hometownweather.Task.RequestWeatherTaskCompleted;
+import com.flybbird.hometownweather.task.RequestWeatherTask;
+import com.flybbird.hometownweather.task.RequestWeatherTaskCompleted;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -32,7 +31,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import io.realm.Realm;

@@ -8,3 +8,6 @@ import com.flybbird.hometownweather.Data.WeatherData;
 public interface RequestWeatherTaskCompleted {
     void onResponseTaskCompleted(WeatherData data);
 }
+
+
+

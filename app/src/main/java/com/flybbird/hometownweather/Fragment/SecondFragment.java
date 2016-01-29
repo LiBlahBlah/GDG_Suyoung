@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,8 +21,8 @@ import com.flybbird.hometownweather.Data.CityListData;
 import com.flybbird.hometownweather.Data.LocationData;
 import com.flybbird.hometownweather.Data.WeatherData;
 import com.flybbird.hometownweather.R;
-import com.flybbird.hometownweather.Task.RequestWeatherTask;
-import com.flybbird.hometownweather.Task.RequestWeatherTaskCompleted;
+import com.flybbird.hometownweather.task.RequestWeatherTask;
+import com.flybbird.hometownweather.task.RequestWeatherTaskCompleted;
 
 import java.util.List;
 
