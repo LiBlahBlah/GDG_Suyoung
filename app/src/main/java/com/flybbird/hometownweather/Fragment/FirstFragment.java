@@ -3,8 +3,10 @@ package com.flybbird.hometownweather.Fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,7 @@ import com.flybbird.hometownweather.Adapter.ListViewAdapter;
 import com.flybbird.hometownweather.DB.WeatherSimpleData;
 import com.flybbird.hometownweather.Data.WeatherData;
 import com.flybbird.hometownweather.R;
+import com.flybbird.hometownweather.databinding.FragmentFirstViewBinding;
 import com.flybbird.hometownweather.task.RequestWeatherTask;
 import com.flybbird.hometownweather.task.RequestWeatherTaskCompleted;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,18 +41,20 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
+ * 우리 동네 날씨
+ * FirstFragment
+ * <p>
  * Created by SuyoungKang on 2016. 1. 24..
  */
 public class FirstFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-                                                        GoogleApiClient.OnConnectionFailedListener,
-                                                        LocationListener,
-                                                        RequestWeatherTaskCompleted {
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        RequestWeatherTaskCompleted {
     private static final String TAG = FirstFragment.class.getSimpleName();
 
     private static final int REQUEST_LOCATION = 2;
     private static final int GPS_LOCATION_INTERVAL = 60 * 1000; //  1분
 
-    private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest = new LocationRequest();
     private TextView mInfoTextView;
     private Location mGpsLocationInfo;
@@ -62,58 +67,45 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
     private ListView mListView;
     private ListViewAdapter mListAdapter;
     private Realm mRealm;
-    private FloatingActionButton mFloatingActionButton;
+    //private FloatingActionButton mFloatingActionButton;
+
+    // DataBinding
+    private FragmentFirstViewBinding firstViewBinding;
+
+    // GPS
+    private GoogleApiClient googleApiClient;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        View firstView =  inflater.inflate(R.layout.fragment_first_view, container, false);
+        firstViewBinding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_first_view);
 
-        mInfoTextView = (TextView) firstView.findViewById(R.id.INFO_TEXT_VIEW);
-        mProgressBar = (ProgressBar) firstView.findViewById(R.id.LOADING_BAR);
-        mWeatherIconImageView = (ImageView) firstView.findViewById(R.id.WEATHER_IMAGE);
-        mWeatherDescTextView = (TextView) firstView.findViewById(R.id.WEATHER_DESC);
-        mWeatherTempTextView = (TextView)firstView.findViewById(R.id.WEATHER_TEMP);
-        mListView = (ListView) firstView.findViewById(R.id.listView);
+        firstViewBinding.FLOATINGACTIONBUTTON.setOnClickListener(view -> {
+            // LOCATION를 가지고 화면 업데이트
+            mProgressBar.setVisibility(View.VISIBLE);
+            mGpsLocationInfo = getLocation();
 
-
-
-        mFloatingActionButton = (FloatingActionButton) firstView.findViewById(R.id.FLOATING_ACTION_BUTTON);
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              // LOCATION를 가지고 화면 업데이트
-                mProgressBar.setVisibility(View.VISIBLE);
-                mGpsLocationInfo = getLocation();
-
-                requestWhether();
-            }
+            requestWhether();
         });
 
-
-        return firstView;
+        return firstViewBinding.getRoot();
     }
 
-
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        final ListView listView = firstViewBinding.listView;
         // 리스트 어댑터 추가
         mListAdapter = new ListViewAdapter(getActivity());
-        mListView.setAdapter(mListAdapter);
-
-
+        listView.setAdapter(mListAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        Log.d("DEBUG", "* FirstFragment onResume");
 
         // Realm DB Init Instance.
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity())
@@ -121,17 +113,10 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
                 .build();
 
 
-        mRealm =  Realm.getInstance(realmConfiguration);
+        mRealm = Realm.getInstance(realmConfiguration);
 
         connectGoogleAPiClient();
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("DEBUG", "* FirstFragment onStop");
-    }
-
 
     @Override
     public void onPause() {
@@ -139,30 +124,12 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
 
         Log.d("DEBUG", "* FirstFragment onPause");
 
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
+        if (googleApiClient.isConnected()) {
+            googleApiClient.disconnect();
         }
         mRealm.close();
     }
 
-
-
-    private void connectGoogleAPiClient(){
-        if ( mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-
-        mLocationRequest.setInterval(GPS_LOCATION_INTERVAL);
-        mLocationRequest.setFastestInterval(500);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-
-        mGoogleApiClient.connect();
-    }
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -184,7 +151,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_LOCATION) {
-            if(grantResults.length == 1
+            if (grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationUpdate();
             }
@@ -194,7 +161,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d(TAG, "onLocationChanged Latitude= "+ location.getLatitude() + " / Longtitude="+ location.getLongitude());
+        Log.d(TAG, "onLocationChanged Latitude= " + location.getLatitude() + " / Longtitude=" + location.getLongitude());
         mGpsLocationInfo = location;
 
         requestWhether();
@@ -203,7 +170,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
 
     @Override
     public void onResponseTaskCompleted(WeatherData data) {
-        if ( data != null){
+        if (data != null) {
             // UI Update
             updateUI(data);
 
@@ -225,7 +192,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
     }
 
 
-    private void requestWhether(){
+    private void requestWhether() {
         new RequestWeatherTask(this).execute(mGpsLocationInfo);
     }
 
@@ -241,7 +208,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
         // Current Time
         simpleData.setMeasureTime(System.currentTimeMillis());
         // 측정 위치
-        simpleData.setLatitude( mGpsLocationInfo.getLatitude() );
+        simpleData.setLatitude(mGpsLocationInfo.getLatitude());
         simpleData.setLongtitude(mGpsLocationInfo.getLongitude());
 
         // 서버에서 온 데이터.
@@ -260,21 +227,18 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
     private double calculateAvgTempatureByCityID(String cityID) {
 
         RealmResults<WeatherSimpleData> results =
-                mRealm.where(WeatherSimpleData.class).equalTo("cityID",cityID)
+                mRealm.where(WeatherSimpleData.class).equalTo("cityID", cityID)
                         .greaterThan("measureTime", getTodayStartMillis()).findAll();
         double avgTempature = results.average("weatherTempature");
-        Log.d("DEBUG","# 오늘 측정된 "+  results.first().getCityName() +" 지역의 날씨 데이터는   = " + results.size()
-                        +" / 평균 온도는 = " + avgTempature
+        Log.d("DEBUG", "# 오늘 측정된 " + results.first().getCityName() + " 지역의 날씨 데이터는   = " + results.size()
+                + " / 평균 온도는 = " + avgTempature
         );
 
-        return  avgTempature;
+        return avgTempature;
     }
 
 
-
-
-
-    private void updateUI( WeatherData data ) {
+    private void updateUI(WeatherData data) {
 //        String locationStr = "UPDATE Location:"+String.valueOf(getLocation().getLatitude()) +
 //                " , " +
 //                String.valueOf(getLocation().getLongitude()) ;
@@ -296,7 +260,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION);
         } else {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
         }
     }
 
@@ -305,7 +269,7 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
 
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             //Execute location service call if user has explicitly granted ACCESS_FINE_LOCATION..
-            Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             return lastKnownLocation;
         }
 
@@ -315,15 +279,40 @@ public class FirstFragment extends Fragment implements GoogleApiClient.Connectio
 
 
     // 오늘 00:00 를 구해오기
-    public long getTodayStartMillis(){
+    public long getTodayStartMillis() {
         Calendar current = Calendar.getInstance();
         current.set(current.get(Calendar.YEAR), current.get(Calendar.MONTH), current.get(Calendar.DATE), 0, 0, 0);
 
         long startTime = current.getTimeInMillis();
-        Log.d("DEBUG","@@ getTodayStartMillis=" + startTime);
+        Log.d("DEBUG", "@@ getTodayStartMillis=" + startTime);
         return startTime;
     }
 
+
+    /************************************************************************************************
+     *
+     *  PRIVATE METHOD
+     *
+     ************************************************************************************************/
+
+    /**
+     * GPS INIT
+     */
+    private void connectGoogleAPiClient() {
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        mLocationRequest.setInterval(GPS_LOCATION_INTERVAL);
+        mLocationRequest.setFastestInterval(500);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        googleApiClient.connect();
+    }
 
 }
 

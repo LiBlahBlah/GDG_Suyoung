@@ -18,9 +18,7 @@ import com.flybbird.hometownweather.Fragment.ThirdFragment;
 
 public class MainActivity extends AppCompatActivity
                         implements NavigationView.OnNavigationItemSelectedListener {
-
     private DrawerLayout mDrawerLayout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +28,6 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle =
@@ -122,10 +118,4 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
-
-
-
 }
